@@ -1,0 +1,75 @@
+services:
+  localstack:
+    container_name: localaws-container-localstack
+    image: localstack/localstack:3.2.0-amd64
+    environment:
+      # SERVICES: dynamodb,kms,secretsmanager,ssm,s3
+      # EAGER_SERVICE_LOADING: "1"
+      # DEBUG: 1
+      AWS_ENDPOINT_URL: http://localhost:4566
+      AWS_DEFAULT_REGION: ap-northeast-1
+      AWS_ACCESS_KEY_ID: dummy
+      AWS_SECRET_ACCESS_KEY: dummy
+    networks:
+      - default
+    ports:
+      - 4566:4566
+    volumes:
+      - ./localstack/ready.d:/etc/localstack/init/ready.d:ro
+      - ./localstack/json:/app/init/json:ro
+      - ./localstack/keys:/app/init/keys:rw
+    healthcheck:
+      test: ["CMD", "awslocal", "s3", "ls", "s3://my-bucket"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+  awscli:
+    container_name: localaws-container-awscli
+    image: amazon/aws-cli:latest
+    environment:
+      AWS_ENDPOINT_URL: http://localstack:4566
+      AWS_DEFAULT_REGION: ap-northeast-1
+      AWS_ACCESS_KEY_ID: dummy
+      AWS_SECRET_ACCESS_KEY: dummy
+    networks:
+      - default
+    volumes:
+      - ./awscli/.aws:/root/.aws:rw
+    working_dir: /root
+    entrypoint: ["/bin/bash"]
+    tty: true
+
+  golang:
+    container_name: localaws-container-golang
+    image: golang:1.22.1-bookworm
+    environment:
+      AWS_ENDPOINT_URL: http://localstack:4566
+      AWS_DEFAULT_REGION: ap-northeast-1
+      AWS_ACCESS_KEY_ID: dummy
+      AWS_SECRET_ACCESS_KEY: dummy
+    networks:
+      - default
+    volumes:
+      - ./golang:/app:rw
+    working_dir: /app
+    tty: true
+
+  node:
+    container_name: localaws-container-node
+    image: node:20.11.1-bookworm-slim
+    environment:
+      AWS_ENDPOINT_URL: http://localstack:4566
+      AWS_DEFAULT_REGION: ap-northeast-1
+      AWS_ACCESS_KEY_ID: dummy
+      AWS_SECRET_ACCESS_KEY: dummy
+    networks:
+      - default
+    volumes:
+      - ./node:/app:rw
+    working_dir: /app
+    tty: true
+
+networks:
+  default:
+    name: localaws-network-default
