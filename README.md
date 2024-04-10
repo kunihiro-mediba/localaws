@@ -41,3 +41,23 @@ Run script
 ```shell
 docker compose exec golang go run ./s3
 ```
+
+### Terraform
+
+Install dependencies
+
+```shell
+docker compose run terraform init
+```
+
+Plan
+
+```shell
+docker compose run terraform plan
+```
+
+Apply
+
+```shell
+docker compose run terraform apply
+```
