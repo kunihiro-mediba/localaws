@@ -1,0 +1,18 @@
+{
+    "name": "localaws-lambda",
+    "version": "1.0.0",
+    "type": "module",
+    "devDependencies": {
+        "@types/archiver": "^6.0.3",
+        "@types/aws-lambda": "^8.10.152",
+        "@types/node": "^24.3.1",
+        "archiver": "^7.0.1",
+        "dprint": "^0.50.1",
+        "esbuild": "^0.25.9",
+        "tsx": "^4.20.5",
+        "typescript": "^5.9.2"
+    },
+    "scripts": {
+        "build": "tsx build.ts"
+    }
+}

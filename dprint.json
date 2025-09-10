@@ -1,0 +1,16 @@
+{
+    "typescript": {
+        "indentWidth": 4
+    },
+    "json": {
+        "indentWidth": 4
+    },
+    "excludes": [
+        "**/node_modules",
+        "**/*-lock.json"
+    ],
+    "plugins": [
+        "https://plugins.dprint.dev/typescript-0.95.11.wasm",
+        "https://plugins.dprint.dev/json-0.20.0.wasm"
+    ]
+}
